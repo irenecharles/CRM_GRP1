@@ -15,53 +15,63 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.github.javafaker.Faker;
 import com.m2i.CRM.entity.Client;
 import com.m2i.CRM.entity.Order;
-import com.m2i.CRM.repository.ClientRepository;
 import com.m2i.CRM.repository.OrderRepository;
 import com.m2i.CRM.service.ClientService;
+import com.m2i.CRM.service.OrderService;
 
 @Controller
-@RequestMapping("/client")
-public class ClientController {
+@RequestMapping("/order")
+public class OrderController {
+	
+	
+	@Autowired
+	OrderService oService;
 	
 	@Autowired
 	ClientService cService;
 	
 	@Autowired
-	ClientRepository repo;
+	OrderRepository repo;
+	
 	
 	@GetMapping
-	public List<Client> findAll(){
-		return cService.getAllClients();
+	public List<Order> findAll(){
+		return oService.getAllOrders();
 	}
 	
 	@GetMapping("/{id}")
-	public Client findById(@PathVariable("id")int id) {
-		return cService.getById(id);
+	public Order findById(@PathVariable("id")int id) {
+		return oService.getById(id);
 	}
 	
 	@PostMapping
-	public void createClient(@RequestBody Client c) {
-		cService.addClient(c);
+	public void createOrder(@RequestBody Order o) {
+		oService.addOrder(o);
 	}
 	
 	@PutMapping("/{id}")
-	public void updateClient(@PathVariable("id")int id, @RequestBody Client c) {
-		c.setId(id);
-		cService.updateClient(c);
+	public void updateOrder(@PathVariable("id")int id, @RequestBody Order o) {
+		o.setId(id);
+		oService.updateOrder(o);
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteClient(@PathVariable("id")int id) {
-		Client c = cService.getById(id);
-		cService.deleteClient(c);
+	public void deleteOrder(@PathVariable("id")int id) {
+		Order o = oService.getById(id);
+		oService.deleteOrder(o);
 	}
 	
 	@GetMapping("/fake/{number}")
-	public void fakeClient(@PathVariable("number")int nb) {
+	public void fakeOrder(@PathVariable("number")int nb) {
 		Faker f = new Faker();
-		for (int i =0; i<nb; i++) {			
-			Client c = new Client(f);			
-			repo.save(c);
+		List<Client> clients = cService.getAllClients();
+		for (int i =0; i<nb; i++) {
+
+			int nbClients = (int)(Math.random()*clients.size());
+			
+			Client c = clients.get(nbClients);
+			Order o = new Order(f, c);			
+			repo.save(o);
 		}
 		
 	}
