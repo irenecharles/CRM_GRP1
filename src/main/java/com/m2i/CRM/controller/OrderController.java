@@ -2,7 +2,10 @@ package com.m2i.CRM.controller;
 
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,8 +47,20 @@ public class OrderController {
 		return oService.getById(id);
 	}
 	
+	@GetMapping("/allOrders/{page}/{nombre}")
+	public Page<Order> getOrders(@PathVariable("page")int page, @PathVariable("nombre")int nombre) {
+		return oService.findAllWithPagination(page, nombre);
+	}
+	
 	@PostMapping
 	public void createOrder(@RequestBody Order o) {
+		oService.addOrder(o);
+	}
+	
+	@PostMapping("/{id}")
+	public void createOrder2(@RequestBody Order o, @PathVariable("id")int id) {
+		Client c = cService.getById(id);
+		o.setClient(c);
 		oService.addOrder(o);
 	}
 	

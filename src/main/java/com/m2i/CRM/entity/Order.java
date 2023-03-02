@@ -17,6 +17,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.javafaker.Faker;
 
 import lombok.AllArgsConstructor;
@@ -51,10 +52,9 @@ public class Order {
 	private int state;
 	
 	@ManyToOne	
-	@JoinTable( name = "order_client_association",
-				joinColumns =  @JoinColumn(name ="id_order"),
-				inverseJoinColumns = @JoinColumn(name = "client_id"))
+	@JoinColumn(name = "client_id")
 	@NotNull
+	@JsonIgnore
 	private Client client;
 
 	public Order(Faker f, Client client) {

@@ -75,11 +75,8 @@ public class Client {
 	private int state;
 	
 
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-	@JoinTable(	name = "order_client_association",
-				joinColumns = @JoinColumn(name ="client_id"),
-				inverseJoinColumns = @JoinColumn( name = "id_order") )
-	@JsonIgnore
+	@OneToMany(targetEntity = Order.class, cascade=CascadeType.ALL, orphanRemoval=true)
+	@JoinColumn(name = "order_client_id", referencedColumnName = "client_id")
 	private List<Order> orders;
 
 	public Client(Faker f) {
