@@ -1,17 +1,33 @@
 package com.m2i.CRM.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Range;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.javafaker.Faker;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -24,25 +40,47 @@ public class Client {
 	@Column(name = "client_id")
 	private int id;
 	
+	@NotBlank
 	private String companyName;
 	
+	@NotBlank
 	private String firstName;
 	
+	@NotBlank
 	private String lastName;
 	
+	@NotBlank
+	@Column(unique = true)
+	@Email
 	private String email;
 	
+	@NotBlank
+	@Column(unique = true)
 	private String phone;
 	
+	@NotBlank
 	private String address;
 	
+	@NotBlank
 	private String zipCode;
 	
+	@NotBlank
 	private String city;
 	
+	@NotBlank
 	private String country;
 	
+	@NotNull
+	@Range(min = 0, max = 1)
 	private int state;
+	
+
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
+	@JoinTable(	name = "order_client_association",
+				joinColumns = @JoinColumn(name ="client_id"),
+				inverseJoinColumns = @JoinColumn( name = "id_order") )
+	@JsonIgnore
+	private List<Order> orders;
 
 	public Client(Faker f) {
 

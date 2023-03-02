@@ -9,6 +9,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Range;
 
 import com.github.javafaker.Faker;
 
@@ -27,20 +34,27 @@ public class Order {
 	@Column(name = "id_order")
 	private int id;
 	
+	@NotBlank
 	private String typePresta;
 	
+	@NotBlank
 	private String designation;
 	
+	@Positive
 	private int nbDays;
 	
+	@Positive
 	private float unitPrice;
 	
+	@NotNull
+	@Range(min = 0, max = 2)
 	private int state;
 	
-	@ManyToOne
+	@ManyToOne	
 	@JoinTable( name = "order_client_association",
 				joinColumns =  @JoinColumn(name ="id_order"),
 				inverseJoinColumns = @JoinColumn(name = "client_id"))
+	@NotNull
 	private Client client;
 
 	public Order(Faker f, Client client) {

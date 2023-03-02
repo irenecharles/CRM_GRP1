@@ -3,7 +3,6 @@ package com.m2i.CRM.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.github.javafaker.Faker;
 import com.m2i.CRM.entity.Client;
@@ -19,7 +19,7 @@ import com.m2i.CRM.repository.OrderRepository;
 import com.m2i.CRM.service.ClientService;
 import com.m2i.CRM.service.OrderService;
 
-@Controller
+@RestController
 @RequestMapping("/order")
 public class OrderController {
 	
