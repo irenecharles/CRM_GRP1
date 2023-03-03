@@ -1,5 +1,6 @@
 package com.m2i.CRM.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,10 +52,9 @@ public class Order {
 	@Range(min = 0, max = 2)
 	private int state;
 	
-	@ManyToOne	
+	@ManyToOne
 	@JoinColumn(name = "client_id")
 	@NotNull
-	@JsonIgnore
 	private Client client;
 
 	public Order(Faker f, Client client) {

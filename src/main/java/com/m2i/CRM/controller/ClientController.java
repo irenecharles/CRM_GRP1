@@ -18,7 +18,9 @@ import com.github.javafaker.Faker;
 import com.m2i.CRM.entity.Client;
 import com.m2i.CRM.entity.Order;
 import com.m2i.CRM.repository.ClientRepository;
+import com.m2i.CRM.repository.OrderRepository;
 import com.m2i.CRM.service.ClientService;
+import com.m2i.CRM.service.OrderService;
 
 @RestController
 @RequestMapping("/client")
@@ -29,6 +31,12 @@ public class ClientController {
 	
 	@Autowired
 	ClientRepository repo;
+	
+	@Autowired
+	OrderRepository oRepo;
+	
+	@Autowired
+	OrderService oService;
 	
 	@GetMapping
 	public List<Client> findAll(){
@@ -62,8 +70,12 @@ public class ClientController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteClient(@PathVariable("id")int id) {
+	public void deleteClient(@PathVariable("id")int id) {	
 		Client c = cService.getById(id);
+		List<Order> orders = oRepo.findByClient(c);
+		for(Order o : orders) {
+			oService.deleteOrder(o);
+		}
 		cService.deleteClient(c);
 	}
 	

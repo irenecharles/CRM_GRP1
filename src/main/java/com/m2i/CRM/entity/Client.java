@@ -75,9 +75,6 @@ public class Client {
 	private int state;
 	
 
-	@OneToMany(targetEntity = Order.class, cascade=CascadeType.ALL, orphanRemoval=true)
-	@JoinColumn(name = "order_client_id", referencedColumnName = "client_id")
-	private List<Order> orders;
 
 	public Client(Faker f) {
 
